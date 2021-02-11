@@ -1,0 +1,7 @@
+{
+  "name": "ion-b",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
