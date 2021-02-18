@@ -1,12 +1,12 @@
-import React , { useState} from 'react';
+import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
+import { IonApp, IonLoading } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import AppTabs from './AppTab';
-import { AuthContext } from './auth';
+import { AuthContext , useAuthInit } from './auth';
 import NoFoundPage from './pages/NoFoundPage';
+import RegisterPage from './pages/RegisterPage';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -28,16 +28,24 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 
 const App: React.FC = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  console.log(`loggedIn= ${loggedIn}`);
+
+  const { loading, auth } = useAuthInit();
+
+  console.log(`redering App with LoggedIn=${auth}`)
+
+  if(loading) {
+    return <IonLoading isOpen />;
+  }
   return (
     <IonApp>
-      <AuthContext.Provider value={{ loggedIn }}>
+      <AuthContext.Provider value={auth}>
       <IonReactRouter>
         <Switch>
           <Route exact path="/login"  >
-            <LoginPage onLogin={() => setLoggedIn(true)}
-            />
+            <LoginPage />
+          </Route>
+          <Route exact path="/Register"  >
+            <RegisterPage />
           </Route>
           <Route path="/my">
             <AppTabs/>
